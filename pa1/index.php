@@ -11,105 +11,161 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSI 127b</title>
+    <title>IMDB Movie Database</title>
 </head>
 <body>
-    <div class="container">
-        <h1 style="text-align:center">COSI 127b</h1><br>
-        <h3 style="text-align:center">Connecting Front-End to MySQL DB</h3><br>
+    <div class="container" style="margin-top: 20px;">
+        <h1 style="text-align:center">IMDB Movie Database</h1><br>
     </div>
     <div class="container">
-        <form id="ageLimitForm" method="post" action="your_php_script.php">
+		<h3 style="text-align:left">Query Options<span style="font-size: 15px; margin-left: 10px;"><i>Example user for testing: alice.johnson@example.com</i></span></h3><br>
+
+        <form id="ageLimitForm" method="post" action="index.php">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Enter minimum age" name="inputAge" id="inputAge">
+                <input type="text" class="form-control" placeholder="Enter user email" name="userEmail" id="userEmail">
+				<div class="input-group-append" >
+                    <button class="btn btn-outline-secondary" type="submit" name="userLikingMovies" id="button-addon2">User liking movies</button>
+                </div>
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit" name="submitted" id="button-addon2">Query</button>
+                    <button class="btn btn-outline-secondary" type="submit" name="viewAllMovies" id="button-addon2">View all movies</button>
+                </div>
+				<div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" name="viewAllActors" id="button-addon2">View all actors</button>
                 </div>
             </div>
         </form>
     </div>
-    <div class="container">
-        <h1>Guests</h1>
+    <div class="container">	
+		<h3 style="text-align:left">Query Result</h3><br>
+		
         <?php
-        // we want to check if the submit button has been clicked (in our case, it is named Query)
-        if(isset($_POST['submitted']))
-        {
-            // set age limit to whatever input we get
-            // ideally, we should do more validation to check for numbers, etc. 
-           $ageLimit = $_POST["inputAge"]; 
-        }
-        else
-        {
-            // if the button was not clicked, we can simply set age limit to 0 
-            // in this case, we will return everything
-            $ageLimit = 0;
-        }
+			// we will now create a table from PHP side 
+			echo "<table class='table table-md table-bordered'>";
+			echo "<thead class='thead-dark' style='text-align: center'>";
+	
+			if(isset($_POST['userLikingMovies'])){
+				$userEmail = $_POST["userEmail"]; 
 
-        // we will now create a table from PHP side 
-        echo "<table class='table table-md table-bordered'>";
-        echo "<thead class='thead-dark' style='text-align: center'>";
 
-        // initialize table headers
-        // YOU WILL NEED TO CHANGE THIS DEPENDING ON TABLE YOU QUERY OR THE COLUMNS YOU RETURN
-         echo "<tr><th class='col-md-2'>Firstname</th><th class='col-md-2'>Lastname</th></tr></thead>";
+				if (empty($userEmail)) {
+					$userEmail = "";
+					$query = "
+					SELECT User.email, User.name AS userName, MotionPicture.name
+					FROM User
+					JOIN Likes ON User.email = Likes.uemail
+					JOIN MotionPicture ON Likes.mpid = MotionPicture.id;
+					";
+				}else{
+					$query = "
+					SELECT User.email, User.name AS userName, MotionPicture.name
+					FROM User
+					JOIN Likes ON User.email = Likes.uemail
+					JOIN MotionPicture ON Likes.mpid = MotionPicture.id
+					WHERE Likes.uemail = '$userEmail';
+					";
+				}
+			
 
-        // generic table builder. It will automatically build table data rows irrespective of result
-        class TableRows extends RecursiveIteratorIterator {
-            function __construct($it) {
-                parent::__construct($it, self::LEAVES_ONLY);
-            }
+				// initialize table headers for 'view all movies'
+				echo "<tr>
+				<th class='col-md-2'>user email</th>
+				<th class='col-md-2'>user name</th>
+				<th class='col-md-2'>movie name</th>
+				</tr></thead>";
 
-            function current() {
-                return "<td style='text-align:center'>" . parent::current(). "</td>";
-            }
+			}else if(isset($_POST['viewAllMovies'])){
 
-            function beginChildren() {
-                echo "<tr>";
-            }
+				$query = "
+				SELECT MotionPicture.*, Movie.box_office_collection
+				FROM Movie
+				JOIN MotionPicture ON Movie.mpid = MotionPicture.id;
+				";
 
-            function endChildren() {
-                echo "</tr>" . "\n";
-            }
-        }
+				// initialize table headers for 'view all movies'
+				echo "<tr>
+				<th class='col-md-2'>id</th>
+				<th class='col-md-2'>name</th>
+				<th class='col-md-2'>rating</th>
+				<th class='col-md-2'>production</th>
+				<th class='col-md-2'>budget</th>
+				<th class='col-md-2'>box office collection</th>
+				</tr></thead>";
+			}else if(isset($_POST['viewAllActors'])){
+				$query = "
+				SELECT Role.role_name, People.*
+				FROM Role
+				JOIN People ON Role.pid = People.id
+				Where Role.role_name = 'actor'
+				";
 
-        // SQL CONNECTIONS
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "COSI127b";
+				// initialize table headers for 'view all movies'
+				echo "<tr>
+				<th class='col-md-2'>role name</th>
+				<th class='col-md-2'>pid</th>
+				<th class='col-md-2'>name</th>
+				<th class='col-md-2'>nationality</th>
+				<th class='col-md-2'>date of birth</th>
+				<th class='col-md-2'>gender</th>
+				</tr></thead>";
+			}
 
-        try {
-            // We will use PDO to connect to MySQL DB. This part need not be 
-            // replicated if we are having multiple queries. 
-            // initialize connection and set attributes for errors/exceptions
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+   
 
-            // prepare statement for executions. This part needs to change for every query
-            $stmt = $conn->prepare("SELECT first_name, last_name FROM guests where age>=$ageLimit");
+			// generic table builder. It will automatically build table data rows irrespective of result
+			class TableRows extends RecursiveIteratorIterator {
+				function __construct($it) {
+					parent::__construct($it, self::LEAVES_ONLY);
+				}
 
-            // execute statement
-            $stmt->execute();
+				function current() {
+					return "<td style='text-align:center'>" . parent::current(). "</td>";
+				}
 
-            // set the resulting array to associative. 
-            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+				function beginChildren() {
+					echo "<tr>";
+				}
 
-            // for each row that we fetched, use the iterator to build a table row on front-end
-            foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-                echo $v;
-            }
-        }
-        catch(PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-        echo "</table>";
-        // destroy our connection
-        $conn = null;
+				function endChildren() {
+					echo "</tr>" . "\n";
+				}
+			}
+
+			// SQL CONNECTIONS
+			$servername = "localhost";
+			$username = "root";
+			$password = "";
+			$dbname = "COSI127b";
+
+			try {
+				// We will use PDO to connect to MySQL DB. This part need not be 
+				// replicated if we are having multiple queries. 
+				// initialize connection and set attributes for errors/exceptions
+				$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+				$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+				// prepare statement for executions. This part needs to change for every query
+				$stmt = $conn->prepare($query);
+
+				// execute statement
+				$stmt->execute();
+
+				// set the resulting array to associative. 
+				$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+				// for each row that we fetched, use the iterator to build a table row on front-end
+				foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+					echo $v;
+				}
+			}
+			catch(PDOException $e) {
+				echo "Error: " . $e->getMessage();
+			}
+			echo "</table>";
+			// destroy our connection
+			$conn = null;
     
     ?>
 
     </div>
 </body>
 </html>
-
-
