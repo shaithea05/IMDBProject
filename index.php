@@ -99,16 +99,16 @@
 
 			<div class="row">
 				<div class="col">
-					<input type="text" class="form-control" placeholder="Enter country" name="shootingLocation" id="shootingLocation">
+					<input type="text" class="form-control" placeholder="Enter number of Awards" name="awardNum" id="awardNum">
 				</div>
 				<div class="col">
-					<button class="btn btn-outline-secondary" type="submit" name="viewMoviesFromLocation" id="button-addon2">View Movies</button>
+					<button class="btn btn-outline-secondary" type="submit" name="viewPeopleWithAwards" id="button-addon2">View people</button>
 				</div>
 				<div class="col">
-					<input type="text" class="form-control" placeholder="Enter zip code" name="zipCode" id="zipCode">
+					<input type="text" class="form-control" placeholder="placeholder" name="z" id="z">
 				</div>
 				<div class="col">
-					<button class="btn btn-outline-secondary" type="submit" name="viewDirectorsFromZipCode" id="button-addon2">View directors</button>
+					<button class="btn btn-outline-secondary" type="submit" name="z" id="button-addon2">z</button>
 				</div>
 			</div>
 
