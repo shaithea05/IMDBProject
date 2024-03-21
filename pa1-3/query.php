@@ -24,6 +24,51 @@ if (isset ($_POST['userLikingMovies'])) {
 		<th class='col-md-2'>budget</th>
 		</tr></thead>";
 
+} else if (isset ($_POST['viewProducers'])) {
+	$boxOfficeCollection = $_POST["boxOfficeCollection"];
+	$budget = $_POST["budget"];
+
+	if (empty ($boxOfficeCollection)) {
+		echo "<script>alert('Please enter box office collection');</script>";
+	} else if (empty ($budget)) {
+		echo "<script>alert('Please enter budget');</script>";
+	} else {
+		$query = "
+			SELECT mp.production, mp.name, m.boxoffice_collection, mp.budget
+			FROM Movie m
+			JOIN MotionPicture mp ON m.mpid = mp.id
+			WHERE m.boxoffice_collection >= $boxOfficeCollection AND mp.budget <= $budget
+		";
+	}
+	echo "<tr>
+		<th class='col-md-2'>Producer Name</th>
+		<th class='col-md-2'>Movie Name</th>
+		<th class='col-md-2'>Box Office Collection</th>
+		<th class='col-md-2'>Budget</th>
+		</tr></thead>";
+
+} else if (isset ($_POST['viewMoviesToLike'])) {
+	$userEmail = $_POST["userEmail"];
+
+	if (empty ($boxOfficeCollection)) {
+		echo "<script>alert('Please enter box office collection');</script>";
+	} else if (empty ($budget)) {
+		echo "<script>alert('Please enter budget');</script>";
+	} else {
+		$query = "
+			SELECT mp.production, mp.name, m.boxoffice_collection, mp.budget
+			FROM Movie m
+			JOIN MotionPicture mp ON m.mpid = mp.id
+			WHERE m.boxoffice_collection >= $boxOfficeCollection AND mp.budget <= $budget
+		";
+	}
+	echo "<tr>
+		<th class='col-md-2'>Producer Name</th>
+		<th class='col-md-2'>Movie Name</th>
+		<th class='col-md-2'>Box Office Collection</th>
+		<th class='col-md-2'>Budget</th>
+		</tr></thead>";
+
 } else if (isset ($_POST['viewPeopleWithAwards'])) {
 	$awardNum = $_POST["awardNum"];
 	if (empty ($awardNum)) {
@@ -106,9 +151,57 @@ if (isset ($_POST['userLikingMovies'])) {
 		<th class='col-md-2'>Budget</th>
 		</tr></thead>";
 
+} else if (isset ($_POST['viewYoungestAndOldest'])) {
+	$query = "
+	SELECT name, age
+	FROM (
+		SELECT 
+			p.name,
+			YEAR(a.award_year) - YEAR(p.dob) AS age
+		FROM 
+			People p
+			JOIN Award a ON p.id = a.pid
+			JOIN MotionPicture mp ON a.mpid = mp.id
+	) AS AwardWinners
+	WHERE age = (
+		SELECT MIN(age) 
+		FROM (
+			SELECT 
+				p.name,
+				YEAR(a.award_year) - YEAR(p.dob) AS age
+			FROM 
+				People p
+				JOIN Award a ON p.id = a.pid
+				JOIN MotionPicture mp ON a.mpid = mp.id
+				JOIN Role r ON p.id = r.pid
+				WHERE r.role_name = 'Actor'
+		) AS SubQuery
+	)
+	OR age = (
+		SELECT MAX(age) 
+		FROM (
+			SELECT 
+				p.name,
+				YEAR(a.award_year) - YEAR(p.dob) AS age
+			FROM 
+				People p
+				JOIN Award a ON p.id = a.pid
+				JOIN MotionPicture mp ON a.mpid = mp.id
+				JOIN Role r ON p.id = r.pid
+				WHERE r.role_name = 'Actor'
+		) AS SubQuery
+	);
+	";
+
+
+
+	echo "<tr>
+		<th class='col-md-2'>Actor Name</th>
+		<th class='col-md-2'>Age</th>
+		</tr></thead>";
 } else if (isset ($_POST['viewAllMovies'])) {
 	$query = "
-		SELECT MotionPicture.*, Movie.box_office_collection
+		SELECT MotionPicture.*, Movie.boxoffice_collection
 		FROM Movie
 		JOIN MotionPicture ON Movie.mpid = MotionPicture.id;
 		";

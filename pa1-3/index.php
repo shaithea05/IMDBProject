@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="icon" type="image/x-icon" href="">
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -11,6 +12,7 @@
 
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
 	<title>IMDB Movie Database</title>
 </head>
 <body>
@@ -32,6 +34,9 @@
 				</div>
 				<div class="input-group-append">
 					<button class="btn btn-outline-secondary" type="submit" name="viewAllMovies" id="button-addon2">View all movies</button>
+				</div>
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="submit" name="viewYoungestAndOldest" id="button-addon2">View youngest and oldeset actor to win an award</button>
 				</div>
 			</div>
 
@@ -99,19 +104,40 @@
 
 			<div class="row">
 				<div class="col">
-					<input type="text" class="form-control" placeholder="Enter number of Awards" name="awardNum" id="awardNum">
+					<input type="text" class="form-control" placeholder="Enter number of awards" name="awardNum" id="awardNum">
 				</div>
 				<div class="col">
 					<button class="btn btn-outline-secondary" type="submit" name="viewPeopleWithAwards" id="button-addon2">View people</button>
 				</div>
 				<div class="col">
-					<input type="text" class="form-control" placeholder="placeholder" name="z" id="z">
+					<input type="text" class="form-control" placeholder="Enter user email" name="userEmail" id="userEmail">
 				</div>
 				<div class="col">
-					<button class="btn btn-outline-secondary" type="submit" name="z" id="button-addon2">z</button>
+					<button class="btn btn-outline-secondary" type="submit" name="viewMoviesToLike" id="button-addon2">View Movies</button>
 				</div>
 			</div>
 
+			<div style="padding-bottom: 20px;"></div>
+
+			<div class="row">
+				<div class="col">
+					<h6>American Producers who had a box office collection of more than or equal to “X” with a budget less than or equal to “Y”.</h6>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col">
+					<input type="text" class="form-control" placeholder="Enter box office collection" name="boxOfficeCollection" id="boxOfficeCollection">
+				</div>
+				<div class="col">
+					<input type="text" class="form-control" placeholder="Enter budget" name="budget" id="budget">
+				</div>
+				<div class="col">
+					<button class="btn btn-outline-secondary" type="submit" name="viewProducers" id="button-addon2">View producers</button>
+				</div>
+			</div>
+
+			<div style="padding-bottom: 20px;"></div>
 
 		</form>
 	</div>
