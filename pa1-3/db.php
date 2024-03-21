@@ -3,9 +3,13 @@
 // generic table builder. It will automatically build table data rows irrespective of result
 class TableRows extends RecursiveIteratorIterator
 {
-	function __construct($it)
+
+	private $showButton = false;
+
+	function __construct($it, $showButton)
 	{
 		parent::__construct($it, self::LEAVES_ONLY);
+		$this->showButton = $showButton;
 	}
 
 	function current()
@@ -20,8 +24,14 @@ class TableRows extends RecursiveIteratorIterator
 
 	function endChildren()
 	{
+		if ($this->showButton) {
+			echo "<td><button class='btn btn-outline-secondary' type='submit' name='' id='button-addon2'>Like</button></td>";
+		}
 		echo "</tr>" . "\n";
+
+
 	}
+
 }
 
 // SQL CONNECTIONS
@@ -39,6 +49,15 @@ try {
 
 	// prepare statement for executions. This part needs to change for every query
 	$stmt = $conn->prepare($query);
+	$showButton = false;
+
+	if ($queryUserLikedMovies) {
+		$stmt2 = $conn->prepare($queryUserLikedMovies);
+		$stmt2->execute();
+		$listOfLikedMovies = $stmt2->setFetchMode(PDO::FETCH_ASSOC);
+		$showButton = true;
+	}
+
 
 	// execute statement
 	$stmt->execute();
@@ -49,7 +68,7 @@ try {
 	if ($stmt->rowCount() == 0) {
 		echo "<h4>No results found. Please try again.</h4>";
 	} else {	// for each row that we fetched, use the iterator to build a table row on front-end
-		foreach (new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k => $v) {
+		foreach (new TableRows(new RecursiveArrayIterator($stmt->fetchAll()), $showButton) as $k => $v) {
 			echo $v;
 		}
 	}
