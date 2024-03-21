@@ -24,36 +24,45 @@ if (isset ($_POST['userLikingMovies'])) {
 		<th class='col-md-2'>budget</th>
 		</tr></thead>";
 
-} else if (isset ($_POST['viewMoviesToLike'])) {
-	$userEmailToLike = $_POST["userEmailToLike"];
+} else if (isset ($_POST['likeMovie'])) {
+	$email = $_POST["userEmailToLike"];
+	$movieName = $_POST["movieValue"];
 
-	if (empty ($userEmailToLike)) {
-		echo "<script>alert('Please enter user email');</script>";
-	} else {
-		$query = "
-		SELECT MotionPicture.name, MotionPicture.rating, MotionPicture.production
-		FROM Movie
-		JOIN MotionPicture ON Movie.mpid = MotionPicture.id;
-		";
-
-		$queryUserLikedMovies = "
-			SELECT MotionPicture.name
-			FROM MotionPicture
-			JOIN Likes ON MotionPicture.id = Likes.mpid
-			JOIN User ON User.email = Likes.uemail
-			WHERE Likes.uemail = '$userEmail';
-		";
-
+	if (!empty ($email)) {
+		echo "<script>alert('$email likes $movieName');</script>";
 	}
 
 
+	$query = "
+	INSERT INTO Likes (mpid, uemail) 
+	SELECT mp.id, '$email' 
+	FROM MotionPicture mp
+	WHERE mp.name = '$movieName' AND EXISTS (
+		SELECT 1 FROM User u 
+		WHERE u.email = '$email') 
+		AND NOT EXISTS ( 
+			SELECT 1 
+			FROM Likes l INNER JOIN MotionPicture mp2 ON l.mpid = mp2.id 
+			WHERE l.uemail = '$email' AND mp2.name = '$movieName' );
+	";
 
-	// initialize table headers for 'view all movies'
+
+
+
+} else if (isset ($_POST['viewMoviesToLike'])) {
+	$userEmailToLike = $_POST["userEmailToLike"];
+	$queryUserLikedMovies = true;
+
+	$query = "
+	SELECT MotionPicture.name, MotionPicture.rating, MotionPicture.production
+	FROM Movie
+	JOIN MotionPicture ON Movie.mpid = MotionPicture.id;
+	";
+
 	echo "<tr>
 		<th class='col-md-2'>Name</th>
 		<th class='col-md-2'>Rating</th>
 		<th class='col-md-2'>Production</th>
-		<th class='col-md-2'>Like</th>
 		</tr></thead>";
 
 } else if (isset ($_POST['viewProducers'])) {

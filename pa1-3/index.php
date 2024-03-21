@@ -75,6 +75,10 @@
 					<button class="btn btn-outline-secondary" type="submit" name="viewYoungestAndOldest"
 						id="button-addon2">View youngest and oldeset actor to win an award</button>
 				</div>
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="submit" name="viewMoviesToLike"
+						id="button-addon2">View Movies To Like</button>
+				</div>	
 			</div>
 
 			<div class="row">
@@ -142,9 +146,6 @@
 					<h6>Find people who have received more than k awards in a single motion picture in the same year
 					</h6>
 				</div>
-				<div class="col">
-					<h6>Place holder</h6>
-				</div>
 			</div>
 
 			<div class="row">
@@ -160,8 +161,7 @@
 					<input type="text" class="form-control" placeholder="Enter user email" name="userEmailToLike" id="userEmailToLike">
 				</div>
 				<div class="col">
-					<button class="btn btn-outline-secondary" type="submit" name="viewMoviesToLike"
-						id="button-addon2">View Movies</button>
+			
 				</div>
 			</div>
 
@@ -239,6 +239,67 @@
 		<h3 style="text-align:left">Query Result</h3><br>
 		<?php include 'query.php'; ?>
 	</div>
+
+
+	<style>
+	.popup {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+	}
+
+	.popup-content {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+	}
+
+	.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	}
+
+	.close:hover,
+	.close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+	}
+	</style>
+
+
+<div id="popup" class="popup">
+	<div class="popup-content">
+		<span class="close" onclick="closePopup()">&times;</span>
+		<p id="movieName"></p> 
+		<form method="post" action="index.php">
+			<input type="text" class="form-control" placeholder="Enter your email" name="userEmailToLike" id="userEmailToLike">
+			<input type="hidden" name="movieValue" id="movieValue">
+			<button class="btn btn-outline-secondary" type="submit" name="likeMovie" id="button-addon2">Like</button>
+		</form>
+	</div>
+</div>
+
+<script>
+function openPopup(movieName) {
+	document.getElementById("popup").style.display = "block";
+	document.getElementById("movieName").innerText = "Movie Name: " + movieName;
+	document.getElementById("movieValue").value = movieName; 
+}
+
+function closePopup() {
+	document.getElementById("popup").style.display = "none";
+}
+</script>
 </body>
 
 </html>
