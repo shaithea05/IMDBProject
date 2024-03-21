@@ -50,7 +50,7 @@
 				<div class="input-group-append">
 					<button class="btn btn-outline-secondary" type="submit" name="viewActorsWithSameBDay" id="button-addon2">View actors who share the same birthday</button>
 				</div>
-
+				<div class="input-group-append">
 					<button class="btn btn-outline-secondary" type="submit" name="viewYoungestAndOldest" id="button-addon2">View youngest and oldeset actor to win an award</button>
 				</div>
 			</div>
@@ -140,10 +140,6 @@
 				</div>
 				<div class="col">
 					<h6>Find all the movies with more than “X” likes by users of age less than “Y”</h6>
-
-			<div class="row">
-				<div class="col">
-					<h6>American Producers who had a box office collection of more than or equal to “X” with a budget less than or equal to “Y”.</h6>
 				</div>
 			</div>
 
@@ -162,13 +158,24 @@
 				</div>
 			</div>
 
-					<input type="text" class="form-control" placeholder="Enter box office collection" name="boxOfficeCollection" id="boxOfficeCollection">
-				</div>
+			<div style="padding-bottom: 20px;"></div>
+
+			<div class="row">
 				<div class="col">
-					<input type="text" class="form-control" placeholder="Enter budget" name="budget" id="budget">
+					<h6>American Producers who had a box office collection of more than or equal to “X” with a budget less than or equal to “Y”.</h6>
 				</div>
+			</div>
+		
+			<div class="row">
 				<div class="col">
-					<button class="btn btn-outline-secondary" type="submit" name="viewProducers" id="button-addon2">View producers</button>
+						<input type="text" class="form-control" placeholder="Enter box office collection" name="boxOfficeCollection" id="boxOfficeCollection">
+					</div>
+					<div class="col">
+						<input type="text" class="form-control" placeholder="Enter budget" name="budget" id="budget">
+					</div>
+					<div class="col">
+						<button class="btn btn-outline-secondary" type="submit" name="viewProducers" id="button-addon2">View producers</button>
+					</div>
 				</div>
 			</div>
 
