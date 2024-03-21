@@ -407,8 +407,9 @@ if (isset ($_POST['userLikingMovies'])) {
 		<th class='col-md-2'>Number of Roles</th>
 		</tr></thead>";
 } else if (isset ($_POST['moviesWithMoreThanXLikesByUsersAgedY'])) {
-	$X = $_POST["X"];
-	$Y = $_POST["Y"];
+	$X = $_POST["numLikes"];
+	$Y = $_POST["age"];
+
 	if (empty ($X)) {
 		echo "<script>alert('Please enter an X value.');</script>";
 	} else if (empty ($Y)) {
@@ -416,8 +417,8 @@ if (isset ($_POST['userLikingMovies'])) {
 	} else {
 	$query = "
 	SELECT
-    m.name AS movie_name,
-    COUNT(l.uemail) AS num_likes
+		m.name AS movie_name,
+		COUNT(l.uemail) AS num_likes
 	FROM
 		MotionPicture m
 	JOIN Likes l ON

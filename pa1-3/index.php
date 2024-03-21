@@ -173,9 +173,7 @@
 					<h6>Find all the people who have played multiple roles in a motion picture where the rating is more
 						than “X”</h6>
 				</div>
-				<div class="col">
-					<h6>empty</h6>
-				</div>
+
 			</div>
 
 			<div class="row">
@@ -185,13 +183,6 @@
 				<div class="col">
 					<button class="btn btn-outline-secondary" type="submit" name="viewActorsandMovies"
 						id="button-addon2">View Actors and Movies</button>
-				</div>
-				<div class="col">
-					<input type="text" class="form-control" placeholder="Enter X and Y"
-						name="moviesWithMoreThanXLikesByUsersAgedY" id="moviesWithMoreThanCLikesByUsersAgedY">
-				</div>
-				<div class="col">
-					<button class="btn btn-outline-secondary" type="submit" name="z" id="button-addon2">Find!</button>
 				</div>
 			</div>
 
