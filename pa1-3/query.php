@@ -148,7 +148,204 @@ if (isset ($_POST['userLikingMovies'])) {
 	echo "<tr>
 		<th class='col-md-2'>Tables</th>
 		</tr></thead>";
-}
+} else if (isset ($_POST['ViewTwoThrillerMovies'])) {
+	$query = "
+	SELECT
+    m.name AS movie_name,
+    m.rating AS movie_rating
+	FROM
+		MotionPicture m
+	JOIN Movie mo ON 
+		m.id = mo.mpid
+	JOIN Genre g ON
+		m.id = g.mpid
+	JOIN Location l ON
+		m.id = l.mpid
+	WHERE
+		g.genre_name = 'Thriller' AND l.city = 'Boston'
+	ORDER BY
+		m.rating
+	DESC
+	LIMIT 2;
+		";
+
+	// initialize table headers for 'view all movies'
+	echo "<tr>
+		<th class='col-md-2'>Movie Name</th>
+		<th class='col-md-2'>Rating</th>
+		</tr></thead>";
+} else if (isset ($_POST['ViewWarnerBrosandMarvelActors'])) {
+	$query = "
+	SELECT
+    p.name AS actor_name,
+    m.name AS motion_picture_name
+	FROM
+		People p
+	JOIN Role r ON
+		p.id = r.pid
+	JOIN MotionPicture m ON
+		r.mpid = m.id
+	JOIN(
+		SELECT DISTINCT
+			pid
+		FROM
+			Role
+		JOIN MotionPicture ON Role.mpid = MotionPicture.id
+		WHERE
+			MotionPicture.production = 'Marvel' OR MotionPicture.production =  'Warner Bros'
+		GROUP BY
+			pid
+		HAVING
+			COUNT(
+				DISTINCT MotionPicture.production
+			) = 2
+	) AS actor_filter
+	ON
+		p.id = actor_filter.pid;
+		";
+
+	// initialize table headers for 'view all movies'
+	echo "<tr>
+		<th class='col-md-2'>Actor</th>
+		<th class='col-md-2'>Motion Picture</th>
+		</tr></thead>";
+} else if (isset ($_POST['ViewMotionPicturesWithHigherAvgRating'])) {
+	$query = "
+	SELECT
+    m.name AS movie_name,
+    m.rating AS movie_rating
+	FROM
+		MotionPicture m
+	JOIN Genre g ON
+		m.id = g.mpid
+	WHERE
+		g.genre_name = 'comedy' AND m.rating > (
+		SELECT
+			AVG(m2.rating)
+		FROM
+			MotionPicture m2
+		JOIN Genre g2 ON
+			m2.id = g2.mpid
+		WHERE
+			g2.genre_name = 'comedy')
+	ORDER BY
+		m.rating
+	DESC;
+
+		";
+
+	// initialize table headers for 'view all movies'
+	echo "<tr>
+		<th class='col-md-2'>Motion Picture</th>
+		<th class='col-md-2'>Rating</th>
+		</tr></thead>";
+} else if (isset ($_POST['viewTopFiveMovieswithHighestNumberofPeoplePlayingRoles'])) {
+	$query = "
+	SELECT
+    m.name AS movie_name,
+    COUNT(DISTINCT r.pid) AS people_count,
+    COUNT(*) AS role_count
+	FROM
+		MotionPicture m
+	JOIN Role r ON
+		m.id = r.mpid
+	GROUP BY
+		m.id,
+		m.name
+	ORDER BY
+		people_count
+	DESC
+	LIMIT 5;
+		";
+
+	// initialize table headers for 'view all movies'
+	echo "<tr>
+		<th class='col-md-2'>Movie Name</th>
+		<th class='col-md-2'>People Count</th>
+		<th class='col-md-2'>Role Count</th>
+		</tr></thead>";
+} else if (isset ($_POST['viewActorsWithSameBDay'])) {
+	$query = "
+	SELECT
+    p1.name,
+    p2.name AS nameTwo,
+    p1.dob
+	FROM
+		People p1
+	JOIN People p2 ON
+		p1.id > p2.id AND p1.dob = p2.dob
+		";
+
+	// initialize table headers for 'view all movies'
+	echo "<tr>
+		<th class='col-md-2'>Actor</th>
+		<th class='col-md-2'>Actor</th>
+		<th class='col-md-2'>Birthday</th>
+		</tr></thead>";
+} else if (isset ($_POST['viewActorsandMovies'])) {
+	$rating = $_POST["rating"];
+	if (empty ($rating)) {
+		echo "<script>alert('Please enter a rating.');</script>";
+	} else {
+	$query = "
+	SELECT
+    p.name AS person_name,
+    m.name AS movie_name,
+    COUNT(r.role_name) AS role_count
+	FROM
+		Role r
+	JOIN MotionPicture m ON
+		r.mpid = m.id
+	JOIN People p ON
+		r.pid = p.id
+	WHERE
+		m.rating > $rating
+	GROUP BY
+		p.name,
+		m.name
+	HAVING
+		COUNT(r.role_name) > 1;
+		";
+	}
+	// initialize table headers for 'view all movies'
+	echo "<tr>
+		<th class='col-md-2'>Actor</th>
+		<th class='col-md-2'>Motion Picture</th>
+		<th class='col-md-2'>Number of Roles</th>
+		</tr></thead>";
+} else if (isset ($_POST['moviesWithMoreThanXLikesByUsersAgedY'])) {
+	$X = $_POST["X"];
+	$Y = $_POST["Y"];
+	if (empty ($X)) {
+		echo "<script>alert('Please enter an X value.');</script>";
+	} else if (empty ($Y)) {
+		echo "<script>alert('Please enter a Y value.');</script>";
+	} else {
+	$query = "
+	SELECT
+    m.name AS movie_name,
+    COUNT(l.uemail) AS num_likes
+	FROM
+		MotionPicture m
+	JOIN Likes l ON
+		m.id = l.mpid
+	JOIN USER u ON
+		l.uemail = u.email
+	WHERE
+		u.age < $Y
+	GROUP BY
+		m.id,
+		m.name
+	HAVING
+		COUNT(l.uemail) > $X
+		";
+	}
+	// initialize table headers for 'view all movies'
+	echo "<tr>
+		<th class='col-md-2'>Movie Name</th>
+		<th class='col-md-2'>Number of Likes</th>
+		</tr></thead>";
+} 
 
 include 'db.php';
 

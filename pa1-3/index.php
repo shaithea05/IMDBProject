@@ -33,6 +33,22 @@
 				<div class="input-group-append">
 					<button class="btn btn-outline-secondary" type="submit" name="viewAllMovies" id="button-addon2">View all movies</button>
 				</div>
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="submit" name="ViewTwoThrillerMovies" id="button-addon2">View the top 2 rated thriller movies that were shot exclusively in Boston</button>
+				</div>
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="submit" name="ViewWarnerBrosandMarvelActors" id="button-addon2">View the actors who have played a role in both “Marvel” and “Warner Bros” productions</button>
+				</div>
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="submit" name="ViewMotionPicturesWithHigherAvgRating" id="button-addon2">View motion pictures that have a higher rating than the average rating of all comedy motion pictures</button>
+				</div>
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="submit" name="viewTopFiveMovieswithHighestNumberofPeoplePlayingRoles" id="button-addon2">View the top 5 movies with the highest number of people playing a role in that movie</button>
+				</div>
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="submit" name="viewActorsWithSameBDay" id="button-addon2">View actors who share the same birthday</button>
+				</div>
+
 			</div>
 
 			<div class="row">
@@ -112,9 +128,35 @@
 				</div>
 			</div>
 
+			<div style="padding-bottom: 20px;"></div>
+			<div class="row">
+				<div class="col">
+					<h6>Find all the people who have played multiple roles in a motion picture where the rating is more than “X”</h6>
+				</div>
+				<div class="col">
+					<h6>Find all the movies with more than “X” likes by users of age less than “Y”</h6>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col">
+					<input type="text" class="form-control" placeholder="Enter rating" name="rating" id="rating">
+				</div>
+				<div class="col">
+					<button class="btn btn-outline-secondary" type="submit" name="viewActorsandMovies" id="button-addon2">View Actors and Movies</button>
+				</div>
+				<div class="col">
+					<input type="text" class="form-control" placeholder="Enter X and Y" name="moviesWithMoreThanXLikesByUsersAgedY" id="moviesWithMoreThanCLikesByUsersAgedY">
+				</div>
+				<div class="col">
+					<button class="btn btn-outline-secondary" type="submit" name="z" id="button-addon2">Find!</button>
+				</div>
+			</div>
+
 
 		</form>
 	</div>
+	
 	<div class="container">	
 		<h3 style="text-align:left">Query Result</h3><br>
 		<?php include 'query.php'; ?>
