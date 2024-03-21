@@ -40,6 +40,13 @@ try {
 	// prepare statement for executions. This part needs to change for every query
 	$stmt = $conn->prepare($query);
 
+	if ($queryUserLikedMovies) {
+		$stmt2 = $conn->prepare($queryUserLikedMovies);
+		$stmt2->execute();
+		$listOfLikedMovies = $stmt2->setFetchMode(PDO::FETCH_ASSOC);
+	}
+
+
 	// execute statement
 	$stmt->execute();
 
@@ -51,6 +58,9 @@ try {
 	} else {	// for each row that we fetched, use the iterator to build a table row on front-end
 		foreach (new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k => $v) {
 			echo $v;
+
+			echo "<button class='btn btn-outline-secondary' type='submit' name='' id='button-addon2'>Like</button>";
+
 		}
 	}
 

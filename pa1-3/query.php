@@ -24,6 +24,38 @@ if (isset ($_POST['userLikingMovies'])) {
 		<th class='col-md-2'>budget</th>
 		</tr></thead>";
 
+} else if (isset ($_POST['viewMoviesToLike'])) {
+	$userEmailToLike = $_POST["userEmailToLike"];
+
+	if (empty ($userEmailToLike)) {
+		echo "<script>alert('Please enter user email');</script>";
+	} else {
+		$query = "
+		SELECT MotionPicture.name, MotionPicture.rating, MotionPicture.production
+		FROM Movie
+		JOIN MotionPicture ON Movie.mpid = MotionPicture.id;
+		";
+
+		$queryUserLikedMovies = "
+			SELECT MotionPicture.name
+			FROM MotionPicture
+			JOIN Likes ON MotionPicture.id = Likes.mpid
+			JOIN User ON User.email = Likes.uemail
+			WHERE Likes.uemail = '$userEmail';
+		";
+
+	}
+
+
+
+	// initialize table headers for 'view all movies'
+	echo "<tr>
+		<th class='col-md-2'>Name</th>
+		<th class='col-md-2'>Rating</th>
+		<th class='col-md-2'>Production</th>
+		<th class='col-md-2'>Like</th>
+		</tr></thead>";
+
 } else if (isset ($_POST['viewProducers'])) {
 	$boxOfficeCollection = $_POST["boxOfficeCollection"];
 	$budget = $_POST["budget"];
@@ -223,7 +255,6 @@ if (isset ($_POST['userLikingMovies'])) {
 		Where Role.role_name = 'actor'
 		";
 
-	// initialize table headers for 'view all movies'
 	echo "<tr>
 		<th class='col-md-2'>Role name</th>
 		<th class='col-md-2'>Pid</th>
@@ -237,7 +268,6 @@ if (isset ($_POST['userLikingMovies'])) {
 		SHOW TABLES;
 		";
 
-	// initialize table headers for 'view all movies'
 	echo "<tr>
 		<th class='col-md-2'>Tables</th>
 		</tr></thead>";
@@ -369,7 +399,6 @@ if (isset ($_POST['userLikingMovies'])) {
 		p1.id > p2.id AND p1.dob = p2.dob
 		";
 
-	// initialize table headers for 'view all movies'
 	echo "<tr>
 		<th class='col-md-2'>Actor</th>
 		<th class='col-md-2'>Actor</th>
@@ -380,7 +409,7 @@ if (isset ($_POST['userLikingMovies'])) {
 	if (empty ($rating)) {
 		echo "<script>alert('Please enter a rating.');</script>";
 	} else {
-	$query = "
+		$query = "
 	SELECT
     p.name AS person_name,
     m.name AS movie_name,
@@ -400,7 +429,6 @@ if (isset ($_POST['userLikingMovies'])) {
 		COUNT(r.role_name) > 1;
 		";
 	}
-	// initialize table headers for 'view all movies'
 	echo "<tr>
 		<th class='col-md-2'>Actor</th>
 		<th class='col-md-2'>Motion Picture</th>
@@ -414,7 +442,7 @@ if (isset ($_POST['userLikingMovies'])) {
 	} else if (empty ($Y)) {
 		echo "<script>alert('Please enter a Y value.');</script>";
 	} else {
-	$query = "
+		$query = "
 	SELECT
     m.name AS movie_name,
     COUNT(l.uemail) AS num_likes
@@ -438,7 +466,7 @@ if (isset ($_POST['userLikingMovies'])) {
 		<th class='col-md-2'>Movie Name</th>
 		<th class='col-md-2'>Number of Likes</th>
 		</tr></thead>";
-} 
+}
 
 include 'db.php';
 

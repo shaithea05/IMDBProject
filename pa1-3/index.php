@@ -157,8 +157,7 @@
 						id="button-addon2">View people</button>
 				</div>
 				<div class="col">
-					<input type="text" class="form-control" placeholder="Enter user email" name="userEmail"
-						id="userEmail">
+					<input type="text" class="form-control" placeholder="Enter user email" name="userEmailToLike" id="userEmailToLike">
 				</div>
 				<div class="col">
 					<button class="btn btn-outline-secondary" type="submit" name="viewMoviesToLike"
