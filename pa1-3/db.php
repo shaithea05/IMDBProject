@@ -25,7 +25,7 @@ class TableRows extends RecursiveIteratorIterator
 	function endChildren()
 	{
 		if ($this->showButton) {
-			echo "<td><button class='btn btn-outline-secondary' type='submit' name='' id='button-addon2'>Like</button></td>";
+			echo "<td><button class='btn btn-outline-secondary' style='width:100%;' type='submit' name='' id='button-addon2'>Like</button></td>";
 		}
 		echo "</tr>" . "\n";
 
