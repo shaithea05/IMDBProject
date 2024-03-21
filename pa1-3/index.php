@@ -157,12 +157,6 @@
 					<button class="btn btn-outline-secondary" type="submit" name="viewPeopleWithAwards"
 						id="button-addon2">View people</button>
 				</div>
-				<div class="col">
-					<input type="text" class="form-control" placeholder="Enter user email" name="userEmailToLike" id="userEmailToLike">
-				</div>
-				<div class="col">
-			
-				</div>
 			</div>
 
 			<div style="padding-bottom: 20px;"></div>
