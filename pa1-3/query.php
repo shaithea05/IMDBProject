@@ -24,6 +24,29 @@ if (isset ($_POST['userLikingMovies'])) {
 		<th class='col-md-2'>budget</th>
 		</tr></thead>";
 
+} else if (isset ($_POST['viewPeopleWithAwards'])) {
+	$awardNum = $_POST["awardNum"];
+	if (empty ($awardNum)) {
+		echo "<script>alert('Please enter an award number');</script>";
+	} else {
+		// remeber to not have same column names
+		$query = "
+			SELECT p.name, mp.name as 'Motion Picture Name', a.award_year, COUNT(*) as award_count
+			FROM Award a
+			JOIN People p ON a.pid = p.id
+			JOIN MotionPicture mp ON a.mpid = mp.id
+			GROUP BY p.name, mp.name, a.award_year
+			HAVING COUNT(*) > $awardNum;
+		";
+	}
+	// initialize table headers for 'view all movies'
+	echo "<tr>
+		<th class='col-md-2'>Person Name</th>
+		<th class='col-md-2'>Motion Picture Name</th>
+		<th class='col-md-2'>Award Year</th>
+		<th class='col-md-2'>Award Count</th>
+		</tr></thead>";
+
 } else if (isset ($_POST['viewDirectorsFromZipCode'])) {
 	$zipCode = $_POST["zipCode"];
 	if (empty ($zipCode)) {
@@ -43,8 +66,8 @@ if (isset ($_POST['userLikingMovies'])) {
 	}
 	// initialize table headers for 'view all movies'
 	echo "<tr>
-		<th class='col-md-2'>Director name</th>
-		<th class='col-md-2'>TV series</th>
+		<th class='col-md-2'>Director Name</th>
+		<th class='col-md-2'>TV Series</th>
 		</tr></thead>";
 
 } else if (isset ($_POST['viewMoviesFromLocation'])) {
@@ -61,7 +84,7 @@ if (isset ($_POST['userLikingMovies'])) {
 	}
 	// initialize table headers for 'view all movies'
 	echo "<tr>
-		<th class='col-md-2'>name</th>
+		<th class='col-md-2'>Name</th>
 		</tr></thead>";
 
 } else if (isset ($_POST['viewMovies'])) {
@@ -77,10 +100,10 @@ if (isset ($_POST['userLikingMovies'])) {
 	}
 	// initialize table headers for 'view all movies'
 	echo "<tr>
-		<th class='col-md-2'>name</th>
-		<th class='col-md-2'>rating</th>
-		<th class='col-md-2'>production</th>
-		<th class='col-md-2'>budget</th>
+		<th class='col-md-2'>Name</th>
+		<th class='col-md-2'>Rating</th>
+		<th class='col-md-2'>Production</th>
+		<th class='col-md-2'>Budget</th>
 		</tr></thead>";
 
 } else if (isset ($_POST['viewAllMovies'])) {
@@ -92,12 +115,12 @@ if (isset ($_POST['userLikingMovies'])) {
 
 	// initialize table headers for 'view all movies'
 	echo "<tr>
-		<th class='col-md-2'>id</th>
-		<th class='col-md-2'>name</th>
-		<th class='col-md-2'>rating</th>
-		<th class='col-md-2'>production</th>
-		<th class='col-md-2'>budget</th>
-		<th class='col-md-2'>box office collection</th>
+		<th class='col-md-2'>ID</th>
+		<th class='col-md-2'>Name</th>
+		<th class='col-md-2'>Rating</th>
+		<th class='col-md-2'>Production</th>
+		<th class='col-md-2'>Budget</th>
+		<th class='col-md-2'>Box Office Collection</th>
 		</tr></thead>";
 } else if (isset ($_POST['viewAllActors'])) {
 	$query = "
@@ -109,12 +132,12 @@ if (isset ($_POST['userLikingMovies'])) {
 
 	// initialize table headers for 'view all movies'
 	echo "<tr>
-		<th class='col-md-2'>role name</th>
-		<th class='col-md-2'>pid</th>
-		<th class='col-md-2'>name</th>
-		<th class='col-md-2'>nationality</th>
-		<th class='col-md-2'>date of birth</th>
-		<th class='col-md-2'>gender</th>
+		<th class='col-md-2'>Role name</th>
+		<th class='col-md-2'>Pid</th>
+		<th class='col-md-2'>Name</th>
+		<th class='col-md-2'>Nationality</th>
+		<th class='col-md-2'>Date Of Birth</th>
+		<th class='col-md-2'>Gender</th>
 		</tr></thead>";
 } else if (isset ($_POST['viewAllTables'])) {
 	$query = "
